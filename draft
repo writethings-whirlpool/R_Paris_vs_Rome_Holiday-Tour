@@ -1,0 +1,89 @@
+install.packages ("tidyverse")
+install.packages ("tidyr")
+install.packages ("ggplot2")
+install.packages("dplyr")
+
+library (tidyverse)
+library (tidyr)
+library (ggplot2)
+library (dplyr)
+
+Holiday <- read.csv("Paris-Rome_HolidayCost_Transportation_Lodging_Attractions.csv")
+head (Holiday)
+View (Holiday)
+
+#Display table for Days and Lodging
+selected_columns <- Holiday[, c("Location", "Number.of.Stays.Days", "Average.Lodging.Cost.Per.Night")]
+print(selected_columns)
+
+#graph below for Lodging costs. Paris vs. Rome
+
+ggplot(data = Holiday) +
+  geom_col(mapping = aes(x=Location, y = Average.Lodging.Cost.Per.Night, fill=Location )) +
+  labs(x=NULL, title= "Comparison of Total Average Lodging Expenses",
+       subtitle= paste0( "5 Nights in Paris vs. 5 Nights in Rome"), 
+       caption= "The average price per night is based on the average 
+       of the midrange hotel rates for the respective cities; where
+       Paris= 129 Euros/night and Rome= 103 Euros/night.")
+
+#Display tables for top10 Tourist Sites in Paris and Rome col. Side by Side
+selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Paris", "X10.Most.Popular.Tourist.Sites_Rome")]
+print(selected_columns)
+
+#Table for Entrance Cost for top10 Tourist Sites in Paris
+selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Paris", "X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket")]
+print(selected_columns)
+
+#Table for Entrance Cost for top10 Tourist Sites in Rome
+selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Rome", "X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.")]
+print(selected_columns)
+
+#Comparative Graph Admission Fees: Paris vs. Rome
+
+ggplot(data = Holiday) +
+  geom_col(mapping = aes(y=X10.Most.Popular.Tourist.Sites_Paris, x= X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket, fill= X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket,), color= "yellow", position= "dodge") +
+  geom_col(mapping = aes(y=X10.Most.Popular.Tourist.Sites_Rome, x= X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros., fill=X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros. ), color ="green", position= "dodge") +
+  labs(fill= "Entrance Fee", x="Entrance/Admission Cost in Euros", y= "Top Tourist Sites", title= "Tourist Sites and Corresponding Admission Costs",
+       subtitle= paste0( "Top 10 Sites in Paris vs. Top 10 Sights in Rome"), 
+       caption= "See references for the source of Top 10 sites.")
+
+#Attempt 2:
+
+# Calculate the sum of admission fees for Paris and Rome
+Paris_AdmissionFees <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket)
+Rome_AdmissionFees <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.)
+
+
+# Create a data frame for the summary
+AdmissionFee_Summary <- data.frame(
+  City = c("Paris", "Rome"),
+  Total_Admission_Fees = c(Paris_AdmissionFees, Rome_AdmissionFees)
+)
+#print (AdmissionFee_Summary)
+
+# Create the ggplot bar plot
+ggplot(data = AdmissionFee_Summary) +
+  geom_col(mapping= aes(x = City, y = Total_Admission_Fees, fill = City) ) +
+  labs(
+    title = "Total Admission Tickets Expenses",
+    subtitle = "Top 10 sites in Paris vs. Top 10 sites in Rome",
+    caption = "A reference for which city may be more costly to tour",
+    x = "City",
+    y = "Total Admission Fees"
+  )
+
+#Transportation
+ggplot(data = Holiday) +
+    geom_col(mapping = aes(x=Average.Transportation.Expenses, y = Transportation_ReturnTrip_Costs..Euros., fill=Average.Transportation.Expenses )) +
+ labs(x=NULL, title= "General Transportation Expenses: 5 days in Paris and 5 Days in Rome",
+            subtitle= ( "blehbleh bheblhehjobvs grgntufty
+           "), caption= " While this basic itinerary budgeting is only meant for 10 days 
+        (--5 days in Paris, France and 5 days in Rome, Italy), the Rome 
+            Metro/Public Transportation doesn't offer an exact 5-day promo 
+            pass, so I opted for the most affordable transportation promo 
+            to cover for the 5-day duration; the 7-day Pass.")
+
+#Display table for Average Trip expenses.
+Ave_Trip_Exp<- Holiday[, c("Average.Transportation.Expenses", "Transportation_ReturnTrip_Costs..Euros.")]
+cleaned_data <- na.omit(Ave_Trip_Exp)
+print(cleaned_data)
