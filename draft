@@ -2,11 +2,13 @@ install.packages ("tidyverse")
 install.packages ("tidyr")
 install.packages ("ggplot2")
 install.packages("dplyr")
+install.packages ("gridExtra")
 
 library (tidyverse)
 library (tidyr)
 library (ggplot2)
 library (dplyr)
+library(gridExtra)
 
 Holiday <- read.csv("Paris-Rome_HolidayCost_Transportation_Lodging_Attractions.csv")
 head (Holiday)
@@ -26,6 +28,9 @@ ggplot(data = Holiday) +
        of the midrange hotel rates for the respective cities; where
        Paris= 129 Euros/night and Rome= 103 Euros/night.")
 
+#-----END of codes for LODGING COSTS-----
+
+
 #Display tables for top10 Tourist Sites in Paris and Rome col. Side by Side
 selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Paris", "X10.Most.Popular.Tourist.Sites_Rome")]
 print(selected_columns)
@@ -38,30 +43,35 @@ print(selected_columns)
 selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Rome", "X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.")]
 print(selected_columns)
 
-#Comparative Graph Admission Fees: Paris vs. Rome
+#SEPARATE Comparative Graph Admission Fees: Paris vs. Rome
 
 ggplot(data = Holiday) +
   geom_col(mapping = aes(y=X10.Most.Popular.Tourist.Sites_Paris, x= X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket, fill= X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket,), color= "yellow", position= "dodge") +
-  geom_col(mapping = aes(y=X10.Most.Popular.Tourist.Sites_Rome, x= X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros., fill=X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros. ), color ="green", position= "dodge") +
   labs(fill= "Entrance Fee", x="Entrance/Admission Cost in Euros", y= "Top Tourist Sites", title= "Tourist Sites and Corresponding Admission Costs",
-       subtitle= paste0( "Top 10 Sites in Paris vs. Top 10 Sights in Rome"), 
+       subtitle= paste0( "Top 10 Sites in Paris"), 
+       caption= "See references for the source of Top 10 sites.")
+  
+  
+  ggplot(data = Holiday) + 
+   geom_col(mapping = aes(y=X10.Most.Popular.Tourist.Sites_Rome, x= X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros., fill=X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros. ), color ="green", position= "dodge") +
+  labs(fill= "Entrance Fee", x="Entrance/Admission Cost in Euros", y= "Top Tourist Sites", title= "Tourist Sites and Corresponding Admission Costs",
+       subtitle= paste0( "Top 10 Sights in Rome"), 
        caption= "See references for the source of Top 10 sites.")
 
-#Attempt 2:
 
 # Calculate the sum of admission fees for Paris and Rome
 Paris_AdmissionFees <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket)
 Rome_AdmissionFees <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.)
 
 
-# Create a data frame for the summary
+# Data frame for the summary of ALL Admission Fees: PARIS + ROME
 AdmissionFee_Summary <- data.frame(
   City = c("Paris", "Rome"),
   Total_Admission_Fees = c(Paris_AdmissionFees, Rome_AdmissionFees)
 )
-#print (AdmissionFee_Summary)
+print (AdmissionFee_Summary)
 
-# Create the ggplot bar plot
+# Graph for Comparison of TOTAL Admission Tickets of each city: PARIS VS. ROME
 ggplot(data = AdmissionFee_Summary) +
   geom_col(mapping= aes(x = City, y = Total_Admission_Fees, fill = City) ) +
   labs(
@@ -71,6 +81,53 @@ ggplot(data = AdmissionFee_Summary) +
     x = "City",
     y = "Total Admission Fees"
   )
+
+#Show Admission Cost graph separately; SIDE BY SIDE COMPARISON: PARIS VS. ROME
+
+plot_paris <- ggplot(data = Holiday) +
+  geom_col(
+    mapping = aes(
+      y = X10.Most.Popular.Tourist.Sites_Paris,
+      x = X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket,
+      fill = X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket
+    ),
+    color = "yellow",
+    position = "dodge"
+  ) +
+  labs(
+    fill = "Entrance Fee",
+    x = "Entrance/Admission Cost in Euros",
+    y = "Top Tourist Sites",
+    title = "Tourist Sites and Corresponding Admission Costs",
+    subtitle = "Top 10 Sites in Paris",
+    caption = "See references for the source of Top 10 sites."
+  )
+
+# Create the second ggplot graph for Rome
+plot_rome <- ggplot(data = Holiday) + 
+  geom_col(
+    mapping = aes(
+      y = X10.Most.Popular.Tourist.Sites_Rome,
+      x = X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.,
+      fill = X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.
+    ),
+    color = "green",
+    position = "dodge"
+  ) +
+  labs(
+    fill = "Entrance Fee",
+    x = "Entrance/Admission Cost in Euros",
+    y = "Top Tourist Sites",
+    title = "Tourist Sites and Corresponding Admission Costs",
+    subtitle = "Top 10 Sights in Rome",
+    caption = "See references for the source of Top 10 sites."
+  )
+
+# Arrange the two plots side by side
+grid.arrange(plot_paris, plot_rome, ncol = 2)
+
+
+#-----END of codes for ADMISSION FEES-----
 
 #Transportation
 ggplot(data = Holiday) +
@@ -83,7 +140,7 @@ ggplot(data = Holiday) +
             pass, so I opted for the most affordable transportation promo 
             to cover for the 5-day duration; the 7-day Pass.")
 
-#Display table for Average Trip expenses.
+#Display table for Average TRANSPORTATION expenses
 Ave_Trip_Exp<- Holiday[, c("Average.Transportation.Expenses", "Transportation_ReturnTrip_Costs..Euros.")]
 cleaned_data <- na.omit(Ave_Trip_Exp)
 print(cleaned_data)
