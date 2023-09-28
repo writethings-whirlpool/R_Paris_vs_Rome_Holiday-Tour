@@ -86,6 +86,7 @@ ggplot(data = AdmissionFee_Summary) +
 
 # first ggplot graph for Paris:
 
+
 plot_paris <- ggplot(data = Holiday) +
   geom_col(
     mapping = aes(
@@ -100,12 +101,12 @@ plot_paris <- ggplot(data = Holiday) +
     fill = "Entrance Fee",
     x = "Entrance/Admission Cost in Euros",
     y = "Top Tourist Sites",
-    title = "Tourist Sites and Corresponding Admission Costs",
+    title = "Tourist Sites Admission Costs",
     subtitle = "Top 10 Sites in Paris",
     caption = "See references for the source of Top 10 sites."
   )
 
-# second ggplot graph for Rome:
+# Create the second ggplot graph for Rome
 plot_rome <- ggplot(data = Holiday) + 
   geom_col(
     mapping = aes(
@@ -120,7 +121,7 @@ plot_rome <- ggplot(data = Holiday) +
     fill = "Entrance Fee",
     x = "Entrance/Admission Cost in Euros",
     y = "Top Tourist Sites",
-    title = "Tourist Sites and Corresponding Admission Costs",
+    title = "Tourist Sites Admission Costs",
     subtitle = "Top 10 Sights in Rome",
     caption = "See references for the source of Top 10 sites."
   )
@@ -133,8 +134,10 @@ grid.arrange(plot_paris, plot_rome, ncol = 2)
 #Transportation
 ggplot(data = Holiday) +
     geom_col(mapping = aes(x=Average.Transportation.Expenses, y = Transportation_ReturnTrip_Costs..Euros., fill=Average.Transportation.Expenses )) +
- labs(x=NULL, title= "General Transportation Expenses: 5 days in Paris and 5 Days in Rome",
-            subtitle= ( "blehbleh bheblhehjobvs grgntufty
+ labs(x=NULL, title= "General Transportation Expenses",
+            subtitle= ( "5 days in Paris and 5 Days in Rome;
+            Flight cost is composed of the back and forth plane 
+            trip from Paris to Rome.
            "), caption= " While this basic itinerary budgeting is only meant for 10 days 
         (--5 days in Paris, France and 5 days in Rome, Italy), the Rome 
             Metro/Public Transportation doesn't offer an exact 5-day promo 
