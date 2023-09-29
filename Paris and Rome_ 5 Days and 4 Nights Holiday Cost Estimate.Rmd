@@ -1,0 +1,299 @@
+---
+title: "Paris and Rome: 5 Days and 4 Nights Holiday Cost Estimate"
+author: "A.M. Simon"
+email: "missangie.writes@gmail.com"
+github: writethings-whirlpool
+output:  
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library (tidyverse)
+library (tidyr)
+library (ggplot2)
+library (dplyr)
+library(gridExtra)
+
+Holiday <- read.csv("Paris-Rome_HolidayCost_Transportation_Lodging_Attractions.csv")
+
+```
+
+#### *Overview:*
+
+*This R document is a budgeting visual guide and comparison for a five-day tour and five-night stay in Paris, France and in Rome, Italy. The figures indicated here are based on the costs indicated in the 2023 pages directly (and officially) related to the respective cities' transportation, travel, and popular tourist attractions. Due to various economic factors (inflation, tourist popularity, etc.) that may change the accuracy of the data with time, fellow travelers are encouraged to always check and compare current costs for an efficient travel-budgeting.*
+
+> ## Contents:
+>
+> 1.  **Average Lodging Cost for 4 Nights: Paris and Rome**
+>
+> 2.  **Top 10 Tourist Sites and their Entrance Fees as of the year 2023: Paris and Rome**
+>
+> 3.  **Average Travel Expenses for 5 days: Paris and Rome**
+>
+> 4.  **OVERALL Holiday Tour Cost: Paris or Rome? Paris AND Rome?**
+>
+> 5.  **Data Sources and References**
+>
+> 6.  **GitHub Link for this Project**
+
+### 1. Average Lodging Cost for 4 Nights: Paris and Rome
+
+For a **quick visual comparison of the average costs to stay at each city**, here's a column graph:
+
+```{r Graph: 4 Nights_Paris vs Rome, fig.height=4, fig.width=6}
+ALL_Paris_Lodging <- (129 * 4)
+
+ALL_Rome_Lodging <- (103 * 4)
+
+
+Lodging_Summary2 <- data.frame(
+  City_Hotel = c("Paris", "Rome"),
+  Cost.4.Nights= c(ALL_Paris_Lodging, ALL_Rome_Lodging)
+)
+
+ggplot(data = Lodging_Summary2) +
+  geom_col(mapping = aes(x = City_Hotel, y = Cost.4.Nights, fill = City_Hotel)) +
+  labs(
+    x = "Cities",
+    y = "Cost for 4 nights stay",
+    title = "Comparison of Total Average Lodging Expenses",
+    subtitle = "4 Nights in Paris vs. 4 Nights in Rome",
+    caption = "The average price per night is based on the average 
+    of the midrange hotel rates for the respective cities; where
+    Paris= 129 Euros/night and Rome= 103 Euros/night."
+  )
+
+```
+
+The average price per night for a **mid-priced hotel** in Paris is at **129 USD** while in Rome it is at **103 USD**. Here's a quick break down for the average cost of a **four-night** stay in each city, and if your budget allows it, the average total for staying at both is:
+
+```{r List:All lodging cost}
+ALL_LodgingCosts <- sum(Holiday$Average.Lodging.Cost.Per.Night) - (129 + 103)  #I made a spreadsheet composed of 5 nights stay, but 	in order to even out the 5-day Holiday in Paris vs. 5-day Holiday in Rome comparison, I decided to deduct one night from each city 	(thus the  129-103 subtraction from the sum of the Average lodging cost per night column)
+
+ALL_Paris_Lodging <- (129 * 4)
+
+ALL_Rome_Lodging <- (103 * 4)
+
+Lodging_Summary1 <- data.frame(
+  City_ = c("Paris", "Rome", "Paris AND Rome"),
+  Cost_4_Nights= c(ALL_Paris_Lodging, ALL_Rome_Lodging, ALL_LodgingCosts))
+print (Lodging_Summary1)
+
+```
+
+### 2. Top 10 Tourist Sites and their Entrance Fees as of the year 2023: Paris and Rome
+
+Below is a list of the **Top 10 Tourist Sites for Paris and Rome.** *If you're viewing this in a narrow screen, don't forget to click the arrow "\>" to the right of the column header to view the rest of the table/list;*
+
+```{r List: Tourist Sites_Paris and Rome}
+selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Paris", "X10.Most.Popular.Tourist.Sites_Rome")]
+print(selected_columns)
+```
+
+If you're curious **which city is more affordable to tour**, here's a column graph for your reference:
+
+```{r Graph: Total Admission Tickets_Paris vs Rome}
+ALL_Paris_Admission <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket)
+ALL_Rome_Admission <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.)
+
+Paris_vs_Rome<- data.frame(
+  City = c("Paris", "Rome"),
+  Total_Admission_Fees = c(ALL_Paris_Admission, ALL_Rome_Admission)
+)
+
+ggplot(data = Paris_vs_Rome) +
+  geom_col(mapping= aes(x = City, y = Total_Admission_Fees, fill = City) ) +
+  labs(
+    title = "Total Admission Tickets Expenses",
+    subtitle = "Top 10 sites in Paris vs. Top 10 sites in Rome",
+    caption = "A reference for which city may be more costly to tour",
+    x = "City",
+    y = "Total Admission Fees"
+  )
+
+```
+
+There's quite a disparity, eh? That's because the Admission fees for the following sites are as follows:
+
+```{r Graph: Admission Cost SIDE BY SIDE_Paris vs Rome, fig.height=3, fig.width=9}
+#first graph for Paris
+plot_paris <- ggplot(data = Holiday) +
+  geom_col(
+    mapping = aes(
+      y = X10.Most.Popular.Tourist.Sites_Paris,
+      x = X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket,
+      fill = X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket
+    ),
+    color = "yellow",
+    position = "dodge"
+  ) +
+  labs(
+    fill = "Entrance Fee",
+    x = "Entrance/Admission Cost in Euros",
+    y = "Top Tourist Sites",
+    title = "Tourist Sites Admission Costs",
+    subtitle = "Top 10 Sites in Paris",
+    caption = "See references for the source of Top 10 sites."
+  )
+
+# second graph for Rome
+plot_rome <- ggplot(data = Holiday) + 
+  geom_col(
+    mapping = aes(
+      y = X10.Most.Popular.Tourist.Sites_Rome,
+      x = X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.,
+      fill = X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.
+    ),
+    color = "green",
+    position = "dodge"
+  ) +
+  labs(
+    fill = "Entrance Fee",
+    x = "Entrance/Admission Cost in Euros",
+    y = "Top Tourist Sites",
+    title = "Tourist Sites Admission Costs",
+    subtitle = "Top 10 Sights in Rome",
+    caption = "See references for the source of Top 10 sites."
+  )
+
+# Stuffing em side by side
+grid.arrange(plot_paris, plot_rome, ncol = 2)
+
+```
+
+While both cities have popular tourist sites that don't charge an entrance fee for visitors, **Rome has significantly less sites that charges a fee**. To view the specific figures for the costs separately for each city (as of the time of this documentation), simply run the code chunk below...
+
+Here's the **cost of Admission Tickets to Paris' Top 10 Tourist Sites**:
+
+```{r List: Paris Admission Cost}
+selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Paris", 	"X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket")]
+names(selected_columns) <- c("Paris_Sites", "Paris_Admission_Cost")
+print(selected_columns)
+```
+
+... And here's the **cost of Admission Tickets to Rome's Top 10 Tourist Sites**:
+
+```{r List: Rome Admission Cost}
+selected_columns <- Holiday[, c("X10.Most.Popular.Tourist.Sites_Rome", 	"X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.")]
+names(selected_columns) <- c("Rome_Sites", "Rome_Admission_Cost")
+print(selected_columns)
+
+```
+
+Now that we're familiar with the costs of touring each of the Top 10 sites in Rome and Italy costs, here's a **breakdown on the Total Cost** should you decide to visit all of them:
+
+```{r List: ALL Admission Costs_Paris vs Rome vs BOTH}
+ALL_AdmissionCosts <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.,Holiday$X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket)
+
+ALL_Paris_Admission <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Paris..Cost.of.General.Admission.Ticket)
+
+ALL_Rome_Admission <- sum(Holiday$X10.Most.Popular.Tourist.Sites_Rome..General.Admission.Ticket.Cost..Euros.)
+
+Admission_Summary <- data.frame(
+  Top_10_Sites = c("Paris", "Rome", "Paris AND Rome"),
+  Total_AdmissionCosts= c(ALL_Paris_Admission, ALL_Rome_Admission, ALL_AdmissionCosts)
+)
+print (Admission_Summary)
+```
+
+### 3. Average Travel Expenses for 5 days: Paris and Rome
+
+```{r Graph: Travel Expenses for 5 days_Paris vs Rome + flight, fig.height=4, fig.width=9}
+Gen.Transpo <- na.omit(Holiday[, c("Average.Transportation.Expenses", "Transportation_ReturnTrip_Costs..Euros.")])
+
+ggplot(data = Gen.Transpo) +
+  geom_col(mapping = aes(x=Average.Transportation.Expenses, y = Transportation_ReturnTrip_Costs..Euros., 	fill=Average.Transportation.Expenses )) +
+  labs(x=NULL, title= "General Transportation Expenses",
+       subtitle= ( "5 days in Paris and 5 Days in Rome;
+         Flight cost is composed of the back and forth plane 
+          trip from Paris to Rome.
+          "), caption= " While this basic itinerary budgeting is only meant for 10 days 
+        (--5 days in Paris, France and 5 days in Rome, Italy), the Rome 
+          Metro/Public Transportation doesn't offer an exact 5-day promo 
+          pass, so I opted for the most affordable transportation promo 
+          to cover for the 5-day duration; the 7-day Pass.")
+```
+
+Overall, the sum of the **average travel expenses** for Paris and Rome would cost is... *(Also, if you're viewing this in a narrow screen, don't forget to click the arrow "\>" to the right of the column header to view the rest of the list)*
+
+```{r List: Average Transportation Expenses_Paris, Rome and BOTH}
+Ave_Trip_Exp<- Gen.Transpo[, c("Average.Transportation.Expenses", "Transportation_ReturnTrip_Costs..Euros.")]
+print(Ave_Trip_Exp)
+```
+
+### 4. OVERALL Holiday Tour Cost: Paris or Rome? Paris AND Rome?
+
+So have you decided yet if your travel budget can take you to either Paris, Rome, or both (--or perhaps it's time to save some more so we can have a budget to splurge on the local gourmet)? Whatever your decision is, here's a point graph to give you a quick visual idea on the gap between the price points of the costs to visit either cities or both:
+
+```{r Graph: OVERALL Price Point Reference_ Paris, Rome, BOTH}
+Transpo_Col <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(1,2,3)]
+
+Flight <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(1)]
+Paris_Metro <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(2)]
+Rome_Metro <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(3)]
+
+ALL_Transportation<- sum(Transpo_Col)
+
+Paris_OVERALL <- sum(ALL_Paris_Lodging,ALL_Paris_Admission,Paris_Metro)
+Rome_OVERALL <- sum(ALL_Rome_Lodging,ALL_Rome_Admission,Rome_Metro)
+BOTH_OVERALL <- sum(ALL_LodgingCosts,ALL_AdmissionCosts,ALL_Transportation)
+
+OVERALL_Summary <- data.frame(
+  FourNights_FiveDays = c("Paris", "Rome", "Paris AND Rome"),
+  Average_Costs= c(Paris_OVERALL, Rome_OVERALL, BOTH_OVERALL)
+)
+
+ggplot(data = OVERALL_Summary) +
+  geom_point(mapping = aes(x = FourNights_FiveDays, y = Average_Costs, color= FourNights_FiveDays)) +
+  labs( color="City",
+        title = "Price Points for a 5-day Holiday to Paris, Rome, and Both"
+  )
+```
+
+Here's a **summary of the total of the average cost to travel, stay, and tour** in Paris, Rome, and both for 5 days and 3 nights:
+
+```{r List: OVERALL Holiday Cost_Paris, Rome, BOTH}
+Transpo_Col <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(1,2,3)]
+
+Flight <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(1)]
+Paris_Metro <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(2)]
+Rome_Metro <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(3)]
+
+ALL_Transportation<- sum(Transpo_Col)
+
+Paris_OVERALL <- sum(ALL_Paris_Lodging,ALL_Paris_Admission,Paris_Metro)
+Rome_OVERALL <- sum(ALL_Rome_Lodging,ALL_Rome_Admission,Rome_Metro)
+BOTH_OVERALL <- sum(ALL_LodgingCosts,ALL_AdmissionCosts,ALL_Transportation)
+
+OVERALL_Summary <- data.frame(
+  FourNights_FiveDays = c("Paris", "Rome", "Paris AND Rome"),
+  Average_Costs= c(Paris_OVERALL, Rome_OVERALL, BOTH_OVERALL)
+)
+print (OVERALL_Summary)
+```
+
+This is where my little Travel budgeting project ends (for now). Thanks for reading through this output with me and I hope it helps both my fellow R-learning newbies and travelers alike.
+
+#### Bon voyage!\~
+
+### 5. Data Sources/ References:
+
+> -   'Paris Average Hotel Costs: Nightly Room Prices by Accommodation Type', <https://www.budgetyourtrip.com/hotels/france/paris-2988507#mid-range-hotels>
+>
+> -   'Paris Visite travel pass', <https://www.ratp.fr/en/titres-et-tarifs/paris-visite-travel-pass>
+>
+> -   'Rome Average Hotel Costs: Nightly Room Prices by Accommodation Type', <https://www.budgetyourtrip.com/hotels/italy/rome-3169070>
+>
+> -   'Rome Transport Tickets', <https://www.rome.net/rome-transport-tickets>
+>
+> -   'Top 10 Sights in Paris', <https://www.introducingparis.com/top-10>
+>
+> -   'Top 10 Sights in Rome', <https://www.rome.net/top-10#>
+
+##### \>\>\> github Repository for this project:
+
+Repository name: R_Paris_vs_Rome_Holiday-Tour
+
+<http://github.com/writethings-whirlpool/R_Paris_vs_Rome_Holiday-Tour.git>
