@@ -8,4 +8,4 @@ current costs for an efficient travel-budgeting.
 
 I hope this project also helps fellow R language newbies and travelers alike :)
 
-This R project is a Capstone Project in partial fullfilment of the Google Data Analytics Program. 09/29/2023_A.M.S.
+09/29/2023_A.M.S.
