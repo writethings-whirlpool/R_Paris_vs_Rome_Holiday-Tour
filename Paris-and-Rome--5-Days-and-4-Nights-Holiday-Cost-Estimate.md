@@ -14,6 +14,8 @@ the accuracy of the data with time, fellow travelers are encouraged to
 always check and compare current costs for an efficient
 travel-budgeting.*
 
+HTML view: <https://rpubs.com/A_M_S/ParisvsRome_Rproject23>
+
 > ## Contents:
 >
 > 1.  **Average Lodging Cost for 4 Nights: Paris and Rome**
@@ -375,8 +377,13 @@ fellow R-learning newbies and travelers alike.
 >
 > - ‘Top 10 Sights in Rome’, <https://www.rome.net/top-10#>
 
+##### \>\>\> RPubs HTML View:
+
+<https://rpubs.com/A_M_S/ParisvsRome_Rproject23>
+
 ##### \>\>\> github Repository for this project:
 
 Repository name: R_Paris_vs_Rome_Holiday-Tour
 
 <http://github.com/writethings-whirlpool/R_Paris_vs_Rome_Holiday-Tour.git>
+
