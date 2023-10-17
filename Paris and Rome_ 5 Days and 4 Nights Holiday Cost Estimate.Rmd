@@ -22,7 +22,7 @@ Holiday <- read.csv("Paris-Rome_HolidayCost_Transportation_Lodging_Attractions.c
 
 #### *Overview:*
 
-*This R document is a budgeting visual guide and comparison for a five-day tour and five-night stay in Paris, France and in Rome, Italy. The figures indicated here are based on the costs indicated in the 2023 pages directly (and officially) related to the respective cities' transportation, travel, and popular tourist attractions. Due to various economic factors (inflation, tourist popularity, etc.) that may change the accuracy of the data with time, fellow travelers are encouraged to always check and compare current costs for an efficient travel-budgeting.*
+*This R document is a budgeting visual guide and comparison for a five-day tour and four-night stay in Paris, France and in Rome, Italy. The figures indicated here are based on the costs indicated in the 2023 pages directly (and officially) related to the respective cities' transportation, travel, and popular tourist attractions. Due to various economic factors (inflation, tourist popularity, etc.) that may change the accuracy of the data with time, fellow travelers are encouraged to always check and compare current costs for an efficient travel-budgeting.*
 
 > ## Contents:
 >
@@ -252,7 +252,7 @@ ggplot(data = OVERALL_Summary) +
   )
 ```
 
-Here's a **summary of the total of the average cost to travel, stay, and tour** in Paris, Rome, and both for 5 days and 3 nights:
+Here's a **summary of the total of the average cost to travel, stay, and tour** in Paris, Rome, and both for 5 days and 4 nights:
 
 ```{r List: OVERALL Holiday Cost_Paris, Rome, BOTH}
 Transpo_Col <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(1,2,3)]
