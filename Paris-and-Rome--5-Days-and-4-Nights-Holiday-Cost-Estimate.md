@@ -5,14 +5,14 @@ A.M. Simon
 #### *Overview:*
 
 *This R document is a budgeting visual guide and comparison for a
-five-day tour and five-night stay in Paris, France and in Rome, Italy.
+five-day tour and four-night stay in Paris, France and in Rome, Italy.
 The figures indicated here are based on the costs indicated in the 2023
 pages directly (and officially) related to the respective cities’
 transportation, travel, and popular tourist attractions. Due to various
 economic factors (inflation, tourist popularity, etc.) that may change
 the accuracy of the data with time, fellow travelers are encouraged to
 always check and compare current costs for an efficient
-travel-budgeting.*
+travel-budgeting. For those who aren't concerned about the R codes behind the graphs and computations, feel free to scroll past the code sections and refer to the tables or graphs displayed under it :)*
 
 HTML view: <https://rpubs.com/A_M_S/ParisvsRome_Rproject23>
 
@@ -325,7 +325,7 @@ ggplot(data = OVERALL_Summary) +
 ![](Paris-and-Rome--5-Days-and-4-Nights-Holiday-Cost-Estimate_files/figure-gfm/Graph:%20OVERALL%20Price%20Point%20Reference_%20Paris,%20Rome,%20BOTH-1.png)<!-- -->
 
 Here’s a **summary of the total of the average cost to travel, stay, and
-tour** in Paris, Rome, and both for 5 days and 3 nights:
+tour** in Paris, Rome, and both for 5 days and 4 nights:
 
 ``` r
 Transpo_Col <- Holiday$Transportation_ReturnTrip_Costs..Euros.[c(1,2,3)]
